@@ -43,6 +43,11 @@ public class DriverChrome {
 		//WebElement elementoMas = driver.findElement(By.xpath("//span[@class='mas']"));
 		//elementoMas.click();
 		
+		//Marcar radio button Smartphones/Móviles
+		WebElement elementSmartphones = driver.findElement(By.xpath("//a[@data-id='1116']"));
+		elementSmartphones.click();
+		
+		//
 		WebElement elementMarcas = driver.findElement(By.xpath("//a[@href='#acc-fil-0']"));
 		elementMarcas.click();
 		
@@ -60,9 +65,14 @@ public class DriverChrome {
 		
 		//Paso 6 pulsar sobre el radio botón de los teléfonos LG
 		element.click();
-		waitForPageLoad(driver);
+		
 		// Paso 7 esperar a que muestre los telefonos LG
-		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		// Paso 8 Obtener todos los elementos que aparecen en la primera página
 		ArrayList<WebElement> resultados2= (ArrayList<WebElement>)
