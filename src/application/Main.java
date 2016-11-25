@@ -42,7 +42,5 @@ public class Main extends Application {
     }
 	public static void main(String[] args) {
 		launch(args);
-		DriverChrome dc = new DriverChrome();
-		dc.Chrome();
 	}
 }

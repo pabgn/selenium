@@ -15,9 +15,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Predicate;
 
-public class DriverChrome {
+import controlador.VentanaPrincipalController;
+import javafx.collections.ObservableList;
 
-	public static void Chrome(){
+public class DriverChromePCComponentes {
+
+	public void Chrome(VentanaPrincipalController ventanaPrincipalController,ObservableList<Movil> listaMoviles,String marca){
 		String exePath = "C:\\Users\\Alvaro\\Desktop\\selenium\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", exePath);
 		ChromeOptions options = new ChromeOptions();
@@ -47,20 +50,32 @@ public class DriverChrome {
 		WebElement elementSmartphones = driver.findElement(By.xpath("//a[@data-id='1116']"));
 		elementSmartphones.click();
 		
-		//
+		//Pulsa el botón para ver las marcas de móviles
 		WebElement elementMarcas = driver.findElement(By.xpath("//a[@href='#acc-fil-0']"));
 		elementMarcas.click();
 		
+		//Pulsar sobre "ver más"
+		
+		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		jse.executeScript("window.scrollBy(0,200)", "");
+			
+		WebElement elementVerMas = driver.findElement( By.className("columna-de-filtros__ver-mas"));
+		
+		waiting = new WebDriverWait(driver, 10);
+		waiting.until(ExpectedConditions.visibilityOf((elementVerMas)));
+		
+		elementVerMas.click();
+		
 		// Paso 5 esperar a que salga el radio botón de LG y hacer scroll
 		waiting = new WebDriverWait(driver, 10);
-		waiting.until( ExpectedConditions.presenceOfElementLocated( By.xpath("//a[@data-id='3']"))
+		waiting.until( ExpectedConditions.presenceOfElementLocated( By.xpath(marca))
 		);
 		
-		WebElement element = driver.findElement(By.xpath("//a[@data-id='3']"));
+		WebElement element = driver.findElement(By.xpath(marca));
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element);
 		actions.perform();
-		JavascriptExecutor jse = (JavascriptExecutor)driver;
+		//JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollBy(0,100)", "");
 		
 		//Paso 6 pulsar sobre el radio botón de los teléfonos LG
@@ -68,7 +83,7 @@ public class DriverChrome {
 		
 		// Paso 7 esperar a que muestre los telefonos LG
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -80,17 +95,21 @@ public class DriverChrome {
 		By.xpath("//*[contains(@class, 'tarjeta-articulo expandible')]"));
 		System.out.println("Resultados " + resultados2.size());
 		
+		ObservableList<Movil> moviles;	
 		// Paso 9 Iterar sobre la lista para obtener las características de los artículos
 		WebElement actual_Elemento, navegacion2;
 		for (int i=0; i< resultados2.size(); i++)
 		{
+			
 			actual_Elemento = resultados2.get(i); // elemento actual de la lista.
 			System.out.println("Elemento: " + i);
 			navegacion2 =actual_Elemento.findElement(By.xpath("./descendant::a"));
 			System.out.println("Por navegación2: " + navegacion2.getAttribute("data-name").toString());
 			System.out.println("Por navegación2: " + navegacion2.getAttribute("data-price").toString() );
 			System.out.println("Qué nodo :" +navegacion2.toString());
-		
+			Movil m = new Movil(navegacion2.getAttribute("data-name").toString(),navegacion2.getAttribute("data-price").toString());
+			listaMoviles.add(m);
+			
 			// si está disponible o no, se buscar en tarjeta-articulo__elementos-adicionales
 			try{
 			navegacion2 = actual_Elemento.findElement(By.className("tarjeta-articulo__elementos-adicionales"));
@@ -99,7 +118,11 @@ public class DriverChrome {
 			catch(Exception e){}
 			// el texto indica si está disponible o no
 			System.out.println("-------------------------------------------");
+			
 		}
+		
+		ventanaPrincipalController.rellenarTabla();
+	
 	}
 	
 	static void waitForPageLoad(WebDriver wdriver) {
