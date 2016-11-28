@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import org.junit.internal.runners.statements.ExpectException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -18,9 +19,9 @@ import com.google.common.base.Predicate;
 import controlador.VentanaPrincipalController;
 import javafx.collections.ObservableList;
 
-public class DriverChromePCComponentes {
+public class DriverChrome {
 
-	public void Chrome(VentanaPrincipalController ventanaPrincipalController,ObservableList<Movil> listaMoviles,String marca){
+	public void PCComponentes(VentanaPrincipalController ventanaPrincipalController,ObservableList<Movil> listaMoviles,String marca){
 		String exePath = "C:\\Users\\Alvaro\\Desktop\\selenium\\chromedriver.exe";
 		System.setProperty("webdriver.chrome.driver", exePath);
 		ChromeOptions options = new ChromeOptions();
@@ -88,6 +89,15 @@ public class DriverChromePCComponentes {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		//pulsar el botón "ver mas" para ver todos los resultados 
+		WebElement btnMore = driver.findElement(By.id("btnMore"));
+		
+		while(btnMore.isDisplayed()) {
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnMore);
+			btnMore.click();
+		}
+		
 		
 		// Paso 8 Obtener todos los elementos que aparecen en la primera página
 		ArrayList<WebElement> resultados2= (ArrayList<WebElement>)

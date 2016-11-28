@@ -2,7 +2,7 @@ package controlador;
 
 import java.util.ArrayList;
 
-import application.DriverChromePCComponentes;
+import application.DriverChrome;
 import application.Movil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,6 +74,8 @@ public class VentanaPrincipalController {
 	@FXML
 	public void iniciarBusqueda(){
 		
+		
+		
 		listaMoviles.clear();
 		
 		switch(menu_marcas.getText()){
@@ -109,8 +111,36 @@ public class VentanaPrincipalController {
 			System.out.println("Seleccione una marca");
 		}
 		
-		DriverChromePCComponentes dc = new DriverChromePCComponentes();
-		dc.Chrome(this,listaMoviles,marca);
+		if(pcComponentes.isSelected()){
+			DriverChrome dc = new DriverChrome();
+			dc.PCComponentes(this,listaMoviles,marca);
+		}
+		if(fnac.isSelected()){
+			
+		}
+		
+		
+	}
+	
+	@FXML
+	public void radioButtonPulsadoPCComponentes(){
+		pcComponentes.setSelected(true);
+		fnac.setSelected(false);
+		amazon.setSelected(false);
+	}
+	
+	@FXML
+	public void radioButtonPulsadoFnac(){
+		fnac.setSelected(true);
+		pcComponentes.setSelected(false);
+		amazon.setSelected(false);
+	}
+	
+	@FXML
+	public void radioButtonPulsadoAmazon(){
+		amazon.setSelected(true);
+		pcComponentes.setSelected(false);
+		fnac.setSelected(false);
 	}
 	
 	public void rellenarTabla(){
