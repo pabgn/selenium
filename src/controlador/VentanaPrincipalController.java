@@ -3,6 +3,7 @@ package controlador;
 import java.util.ArrayList;
 
 import application.DriverChrome;
+import application.DriverFnac;
 import application.Movil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -116,7 +117,8 @@ public class VentanaPrincipalController {
 			dc.PCComponentes(this,listaMoviles,marca);
 		}
 		if(fnac.isSelected()){
-			
+            DriverFnac df = new DriverFnac();
+            df.Fnac(this, listaMoviles, menu_marcas.getText());
 		}
 		
 		
