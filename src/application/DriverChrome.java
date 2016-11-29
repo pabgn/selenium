@@ -53,13 +53,14 @@ public class DriverChrome {
 		
 		//Pulsa el botón para ver las marcas de móviles
 		WebElement elementMarcas = driver.findElement(By.xpath("//a[@href='#acc-fil-0']"));
-		elementMarcas.click();
+		//elementMarcas.click();
 		
 		//Pulsar sobre "ver más"
 		
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
-		jse.executeScript("window.scrollBy(0,200)", "");
-			
+		//jse.executeScript("window.scrollBy(0,200)", "");
+		
+		
 		WebElement elementVerMas = driver.findElement( By.className("columna-de-filtros__ver-mas"));
 		
 		waiting = new WebDriverWait(driver, 10);
@@ -76,6 +77,7 @@ public class DriverChrome {
 		Actions actions = new Actions(driver);
 		actions.moveToElement(element);
 		actions.perform();
+		
 		//JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollBy(0,100)", "");
 		
@@ -94,7 +96,14 @@ public class DriverChrome {
 		WebElement btnMore = driver.findElement(By.id("btnMore"));
 		
 		while(btnMore.isDisplayed()) {
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnMore);
+			//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnMore);
+			jse.executeScript("window.scrollBy(0,400)", "");
+			try {
+				Thread.sleep(50);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			btnMore.click();
 		}
 		
