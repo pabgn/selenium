@@ -22,17 +22,20 @@ public class VentanaPrincipalController {
 	@FXML
 	private MenuButton menu_marcas;
 	@FXML
-	private RadioButton pcComponentes,fnac,amazon;
-	@FXML
-	private TableView tabla_resultados;
+	private TableView tabla_resultados_pccomponentes,tabla_resultados_fnac;
 	@FXML
 	private MenuItem lg,samsung,huawei,motorola,apple,one_plus,lenovo;
 	@FXML
-	private TableColumn<Movil, String> columnaPrecio;
+	private TableColumn<Movil, String> columnaPrecio_pc;
 	@FXML
-	private TableColumn<Movil, String> columnaModelo;
+	private TableColumn<Movil, String> columnaModelo_pc;
+	@FXML
+	private TableColumn<Movil, String> columnaPrecio_fnac;
+	@FXML
+	private TableColumn<Movil, String> columnaModelo_fnac;
 
-	private ObservableList<Movil> listaMoviles = FXCollections.observableArrayList();
+	private ObservableList<Movil> listaMoviles_pc = FXCollections.observableArrayList();
+	private ObservableList<Movil> listaMoviles_fnac = FXCollections.observableArrayList();
 	private String marca;
 	
 	public void initialize(){
@@ -75,9 +78,7 @@ public class VentanaPrincipalController {
 	@FXML
 	public void iniciarBusqueda(){
 		
-		
-		
-		listaMoviles.clear();
+		listaMoviles_pc.clear();
 		
 		switch(menu_marcas.getText()){
 		case "LG":
@@ -112,44 +113,32 @@ public class VentanaPrincipalController {
 			System.out.println("Seleccione una marca");
 		}
 		
+		/*
 		if(pcComponentes.isSelected()){
 			DriverChrome dc = new DriverChrome();
-			dc.PCComponentes(this,listaMoviles,marca);
+			dc.PCComponentes(this,listaMoviles_pc,marca);
 		}
 		if(fnac.isSelected()){
             DriverFnac df = new DriverFnac();
-            df.Fnac(this, listaMoviles, menu_marcas.getText());
+            df.Fnac(this, listaMoviles_fnac, menu_marcas.getText());
 		}
+		*/
+		DriverChrome dc = new DriverChrome();
+		dc.PCComponentes(this, listaMoviles_pc, marca);
+		DriverFnac dn = new DriverFnac();
+		dn.Fnac(this, listaMoviles_fnac, marca);
 		
-		
 	}
 	
-	@FXML
-	public void radioButtonPulsadoPCComponentes(){
-		pcComponentes.setSelected(true);
-		fnac.setSelected(false);
-		amazon.setSelected(false);
-	}
-	
-	@FXML
-	public void radioButtonPulsadoFnac(){
-		fnac.setSelected(true);
-		pcComponentes.setSelected(false);
-		amazon.setSelected(false);
-	}
-	
-	@FXML
-	public void radioButtonPulsadoAmazon(){
-		amazon.setSelected(true);
-		pcComponentes.setSelected(false);
-		fnac.setSelected(false);
-	}
 	
 	public void rellenarTabla(){
-		System.out.println(listaMoviles.size());
-		columnaModelo.setCellValueFactory(cellData ->cellData.getValue().getNombre());
-		columnaPrecio.setCellValueFactory(cellData ->cellData.getValue().getPrecio());
-		tabla_resultados.setItems(listaMoviles);
+		System.out.println(listaMoviles_pc.size());
+		columnaModelo_pc.setCellValueFactory(cellData ->cellData.getValue().getNombre());
+		columnaPrecio_pc.setCellValueFactory(cellData ->cellData.getValue().getPrecio());
+		columnaModelo_fnac.setCellValueFactory(cellData ->cellData.getValue().getNombre());
+		columnaPrecio_fnac.setCellValueFactory(cellData ->cellData.getValue().getPrecio());
+		tabla_resultados_pccomponentes.setItems(listaMoviles_pc);
+		tabla_resultados_fnac.setItems(listaMoviles_fnac);
 	}
 	
 	public Button getBoton_buscar() {
@@ -168,36 +157,13 @@ public class VentanaPrincipalController {
 		this.menu_marcas = menu_marcas;
 	}
 
-	public RadioButton getPcComponentes() {
-		return pcComponentes;
-	}
-
-	public void setPcComponentes(RadioButton pcComponentes) {
-		this.pcComponentes = pcComponentes;
-	}
-
-	public RadioButton getFnac() {
-		return fnac;
-	}
-
-	public void setFnac(RadioButton fnac) {
-		this.fnac = fnac;
-	}
-
-	public RadioButton getAmazon() {
-		return amazon;
-	}
-
-	public void setAmazon(RadioButton amazon) {
-		this.amazon = amazon;
-	}
-
+	
 	public TableView getTabla_resultados() {
-		return tabla_resultados;
+		return  tabla_resultados_pccomponentes;
 	}
 
 	public void setTabla_resultados(TableView table_resultados) {
-		this.tabla_resultados = table_resultados;
+		this. tabla_resultados_pccomponentes = table_resultados;
 	}
 
 	public MenuItem getLg() {
@@ -256,20 +222,27 @@ public class VentanaPrincipalController {
 		this.lenovo = lenovo;
 	}
 
-	public String getMarca() {
+	public String getmarca() {
 		return marca;
 	}
 
-	public void setMarca(String marca) {
+	public void setmarca(String marca) {
 		this.marca = marca;
 	}
 
-	public ObservableList<Movil> getListaMoviles() {
-		return listaMoviles;
+	public ObservableList<Movil> getListaMovilesPC() {
+		return listaMoviles_pc;
 	}
 
-	public void setListaMoviles(ObservableList<Movil> listaMoviles) {
-		this.listaMoviles = listaMoviles;
+	public void setListaMovilesPC(ObservableList<Movil> listaMoviles) {
+		this.listaMoviles_pc = listaMoviles;
 	}
 	
+	public ObservableList<Movil> getListaMovilesFnac() {
+		return listaMoviles_fnac;
+	}
+
+	public void setListaMovilesFnac(ObservableList<Movil> listaMoviles) {
+		this.listaMoviles_fnac = listaMoviles;
+	}
 }

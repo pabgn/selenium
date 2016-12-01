@@ -33,6 +33,40 @@ public class DriverFnac {
 		}
 		driver.get("http://www.fnac.es/telefono-MP3-GPS/Smartphones-Libres/s39887");
 		
+		
+		switch(marca){
+		case "//a[@data-id='3']":
+			marca = "LG";
+			break;
+			
+		case "//a[@data-id='27']":
+			marca = "Samsung";
+			break;
+			
+		case "//a[@data-id='644']":
+			marca = "Huawei";
+			break;
+			
+		case "//a[@data-id='21']":
+			marca = "Motorola";
+			break;
+			
+		case "//a[@data-id='161']":
+			marca = "Apple";
+			break;
+			
+		case "//a[@data-id='887']":
+			marca = "One Plus";
+			break;
+			
+		case "//a[@data-id='178']":
+			marca = "Lenovo";
+			break;
+			
+		 default:
+			marca = "Samsung";
+		}
+		
 		ArrayList<WebElement> res = (ArrayList<WebElement>) driver.findElements(
 					By.xpath("//a[@class='categoryMenu-link']"));
 			
@@ -42,8 +76,9 @@ public class DriverFnac {
 				if(t.contains(marca)){
 					hrefGoto= el.getAttribute("href");
 				}
-				System.out.println(t);
+			
 			}
+		
 			driver.get(hrefGoto);
 			WebDriverWait waiting = new WebDriverWait(driver, 10);
 			waiting.until( ExpectedConditions.presenceOfElementLocated( By.xpath("//li[@class='clearfix Article-item']"))
@@ -69,9 +104,20 @@ public class DriverFnac {
 
 			ArrayList<WebElement> res2 = (ArrayList<WebElement>) driver.findElements(
 					By.xpath("//li[contains(@class, 'Article-item')]"));
+			String name = "";
+			String price = "";
 			for(WebElement phone : res2){	
-				String name = phone.findElement(By.xpath(".//a[@class='js-minifa-title']")).getText();
-				String price = phone.findElement(By.xpath(".//*[@class='userPrice']")).getText();
+				try{
+					 name = phone.findElement(By.xpath(".//a[@class='js-minifa-title']")).getText();
+				}catch(Exception e){
+					name = "Nombre no disponible";
+				}
+				try{
+					 price = phone.findElement(By.xpath(".//*[@class='userPrice']")).getText();
+				}catch(Exception e){
+					
+					price = "Precio no disponible";
+				}
 				
 				Movil m = new Movil(name,price);
 				listaMoviles.add(m);

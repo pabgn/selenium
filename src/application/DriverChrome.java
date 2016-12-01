@@ -44,7 +44,7 @@ public class DriverChrome {
 		driver.findElement(By.xpath("//button[@class='btn btn-block btn-secondary m-t-1 accept-cookie']")).click();
 		
 		// Paso 1 introducir la cadena de bï¿½squeda
-		String searchText="MÃ³viles"+ '\n';
+		String searchText="Móviles"+ '\n';
 		WebElement searchInputBox=driver.findElement(By.name("query"));
 		searchInputBox.sendKeys(searchText);
 		
@@ -58,8 +58,8 @@ public class DriverChrome {
 		//elementoMas.click();
 		
 		//Marcar radio button Smartphones/Mï¿½viles
-		//WebElement elementSmartphones = driver.findElement(By.xpath("//a[@data-id='1116']"));
-		//elementSmartphones.click();
+		WebElement elementSmartphones = driver.findElement(By.xpath("//a[@data-id='1116']"));
+		elementSmartphones.click();
 		
 		//Pulsa el botï¿½n para ver las marcas de mï¿½viles
 		WebElement elementMarcas = driver.findElement(By.xpath("//a[@href='#acc-fil-0']"));
@@ -103,21 +103,22 @@ public class DriverChrome {
 			e1.printStackTrace();
 		}
 		
-		//pulsar el botï¿½n "ver mas" para ver todos los resultados 
+		//pulsar el botón "ver mas" para ver todos los resultados 
 		WebElement btnMore = driver.findElement(By.id("btnMore"));
+		WebElement divBtnMore = driver.findElement(By.id("div-btmMore"));
 		
-		while(btnMore.isDisplayed()) {
-			//((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnMore);
-			jse.executeScript("window.scrollBy(0,400)", "");
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		
+		Actions actions1 = new Actions(driver);
+		
+		while(divBtnMore.isEnabled()) {
+			actions1.moveToElement(btnMore).perform();
+			waiting = new WebDriverWait(driver, 2);
+			try{
+			waiting.until(ExpectedConditions.elementToBeClickable(By.id("btnMore"))
+			);
 			btnMore.click();
+			}catch(Exception e){System.out.println("Error en el bucle, falta elemnto ver mas");break;}
 		}
-		
 		
 		// Paso 8 Obtener todos los elementos que aparecen en la primera pï¿½gina
 		ArrayList<WebElement> resultados2= (ArrayList<WebElement>)
@@ -125,7 +126,7 @@ public class DriverChrome {
 		By.xpath("//*[contains(@class, 'tarjeta-articulo expandible')]"));
 		System.out.println("Resultados " + resultados2.size());
 		
-		ObservableList<Movil> moviles;	
+		//ObservableList<Movil> moviles;	
 		// Paso 9 Iterar sobre la lista para obtener las caracterï¿½sticas de los artï¿½culos
 		WebElement actual_Elemento, navegacion2;
 		for (int i=0; i< resultados2.size(); i++)
@@ -136,14 +137,14 @@ public class DriverChrome {
 			navegacion2 =actual_Elemento.findElement(By.xpath("./descendant::a"));
 			System.out.println("Por navegaciï¿½n2: " + navegacion2.getAttribute("data-name").toString());
 			System.out.println("Por navegaciï¿½n2: " + navegacion2.getAttribute("data-price").toString() );
-			System.out.println("Quï¿½ nodo :" +navegacion2.toString());
+			System.out.println("Qué nodo :" +navegacion2.toString());
 			Movil m = new Movil(navegacion2.getAttribute("data-name").toString(),navegacion2.getAttribute("data-price").toString());
 			listaMoviles.add(m);
 			
 			// si estï¿½ disponible o no, se buscar en tarjeta-articulo__elementos-adicionales
 			try{
 			navegacion2 = actual_Elemento.findElement(By.className("tarjeta-articulo__elementos-adicionales"));
-			System.out.println("Por navegaciï¿½n 2 " + navegacion2.getText()); 
+			System.out.println("Por navegación 2 " + navegacion2.getText()); 
 			}
 			catch(Exception e){}
 			// el texto indica si estï¿½ disponible o no
